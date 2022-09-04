@@ -8,13 +8,7 @@ class Api {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                email: email,
-                firstName: firstname,
-                indexNumber: index,
-                password: password,
-                confirmPassword: confirmPassword
-            })
+            body: JSON.stringify(props)
         })
         .then(response => response.json())
         .then(data => data)
@@ -22,17 +16,85 @@ class Api {
     }
 
     static loginAction = async (props) => {
-        const {email, password} = props
-
         return fetch('http://zaliczenie.btry.eu/api/Auth/Login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
+            body: JSON.stringify(props)
+        })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+    }
+
+    static getCoursesAction = async (props) => {
+        const userJson = localStorage.getItem('user');
+        const user = JSON.parse(userJson);
+        const token = user.token;
+
+        return fetch('http://zaliczenie.btry.eu/api/Course', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+    }
+
+    static addCourseAction = async (props) => {
+        const userJson = localStorage.getItem('user');
+        const user = JSON.parse(userJson);
+        const token = user.token;
+
+        let bodyContent = new FormData();
+        bodyContent.append("Title", props.Title);
+
+        return fetch('http://zaliczenie.btry.eu/api/Course', {
+            method: 'POST',
+            headers: {
+                'Accept': '*',
+                'Authorization': `Bearer ${token}`
+            },
+            body: bodyContent
+        })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+    }
+
+    static addCourseExamAction = async (props) => {
+        const userJson = localStorage.getItem('user');
+        const user = JSON.parse(userJson);
+        const token = user.token;
+
+        return fetch('http://zaliczenie.btry.eu/api/Exams', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': '*',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(props)
+        })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+    }
+
+    static setPassExamStatus = async (props) => {
+        const userJson = localStorage.getItem('user');
+        const user = JSON.parse(userJson);
+        const token = user.token;
+
+        return fetch(`http://zaliczenie.btry.eu/api/Exams/${props.examId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': '*',
+                'Authorization': `Bearer ${token}`
+            },
         })
         .then(response => response.json())
         .then(data => data)

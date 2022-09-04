@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, Link, NavLink, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 import HomePage from "./Pages/HomePage";
-import Subjects from "./Pages/Auth/Subjects";
+import CoursesPage from "./Pages/Auth/CoursesPage";
 import LogoutPage from "./Pages/Auth/LogoutPage";
 import LoginPage from "./Pages/Guest/LoginPage";
 import RegisterPage from "./Pages/Guest/RegisterPage";
@@ -39,7 +39,6 @@ function App() {
 
   const loginUser = async (props) => {
     const response = await Api.loginAction(props);
-    console.log(response.message);
     setUser({...user, username: props.email, auth: true});
     localStorage.setItem('user', JSON.stringify({username: props.email, token: response.message}));
     return navigate('/');
@@ -47,7 +46,6 @@ function App() {
 
   const registerUser = async (props) => {
     const response = await Api.registerAction(props);
-    console.log(response);
     return navigate('/login');
   }
 
@@ -60,6 +58,7 @@ function App() {
           <p>
             {user.username} <Link to="/logout">Logout</Link>
           </p> 
+          <Link to="/courses">Courses</Link>
         </>
       ): (
         <>
@@ -71,13 +70,10 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         
-        <Route element={<PrivateRoute user={user} />}>
-          <Route path="/subjects" element={<Subjects />} />
-        </Route>
-        
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/logout" element={<LogoutPage logout={logoutUser} />} />
         <Route path="/login" element={<LoginPage login={loginUser} user={user} />} />
         <Route path="/register" element={<RegisterPage register={registerUser} user={user} />} />
-        <Route path="/logout" element={<LogoutPage logout={logoutUser} />} />
       </Routes>
     </div>
   );
