@@ -1,13 +1,14 @@
-const Api = () => {
+class Api {
 
-    const API_URL = "http://zaliczenie.btry.eu/"
+    API_URL = "http://zaliczenie.btry.eu/"
 
-    const registerAction = (props) => {
+    static registerAction = async (props) => {
         const {email, firstname, index, password, confirmPassword} = props
-        
     }
 
-    const loginAction = (props) => {
+    static loginAction = async (props) => {
         const {email, password} = props
     }
 }
+
+export default Api;

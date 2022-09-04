@@ -1,6 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({login}) => {
+const LoginPage = ({login, user}) => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if(user.auth) {
+            navigate('/')
+        }
+    });
 
     const [errors, setErrors] = useState([]);
 
