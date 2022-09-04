@@ -37,16 +37,17 @@ function App() {
     return navigate('/');
   }
 
-  const loginUser = (props) => {
-    const {email, password} = props
-    Api.loginAction(email, password);
-    setUser({...user, username: email, auth: true});
-    localStorage.setItem('user', JSON.stringify({username: email}));
+  const loginUser = async (props) => {
+    const response = await Api.loginAction(props);
+    console.log(response.message);
+    setUser({...user, username: props.email, auth: true});
+    localStorage.setItem('user', JSON.stringify({username: props.email, token: response.message}));
     return navigate('/');
   }
 
-  const registerUser = (props) => {
-    const {email, firstname, index, password, confirmPassword} = props
+  const registerUser = async (props) => {
+    const response = await Api.registerAction(props);
+    console.log(response);
     return navigate('/login');
   }
 

@@ -22,7 +22,7 @@ const RegisterPage = ({register}) => {
         if(firstname.length < 3) {
             errors.push('Firstname field have to have at least 6 symbols.')
         }
-        if(index.length !== 6) {
+        if(index.length !== 5) {
             errors.push('Index field has exactly 6 symbols.')
         }
         if(password.length < 6) {
